@@ -1,10 +1,11 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watchEffect } from 'vue';
 import { useGamesStore } from '@/stores/games';
 import { useRoute } from 'vue-router';
 import Loader from '@/components/SearchLoader.vue';
 import Button from 'primevue/button';
 import Card from 'primevue/card';
+import Rating from 'primevue/rating';
 
 // Components
 import ViewTitle from '@/components/GameView/ViewTitle.vue';
@@ -13,11 +14,15 @@ import ViewCoverImg from '@/components/GameView/ViewCoverImg.vue';
 import ViewButton from '@/components/GameView/ViewButton.vue';
 import ViewDesc from '@/components/GameView/ViewDesc.vue';
 import ViewScreenshots from '@/components/GameView/ViewScreenshots.vue';
+import { stringDateFormatter } from '@/utils/dateFormatter';
+import getFullCoverUrl from '@/utils/getFullCoverUrl';
 
 
 const gamesStore = useGamesStore();
 const route = useRoute();
 const id = route.params.id;
+
+const similarGames = computed(() => gamesStore.similarGames);
 const game = ref({});
 const loading = ref(true);
 
@@ -27,9 +32,6 @@ onMounted(() => {
 
         game.value = gamesStore.gameDetails;
         loading.value = false;
-        console.log(game.value);
-
-        console.log(game.value.artworks[0].url)
     }
     fetchGame();
 });
@@ -45,14 +47,14 @@ onMounted(() => {
         <article>
             <ViewTitle :title="game.name" />
             <ViewSummary :summary="game.summary" />
-            <ViewCoverImg :artworks="game.artworks" :name="game.name" />
-            <div class="flex gap-4 mt-6">
+            <ViewCoverImg :game="game" />
+            <div v-show="game" class="flex gap-4 mt-6">
                 <ViewButton :game="game" />
             </div>
-            <div class="mt-6">
+            <div v-show="game.storyline" class="mt-6">
                 <ViewDesc :storyline="game.storyline" />
             </div>
-            <div class="mt-6">
+            <div v-show="game.artworks" class="mt-6">
                 <ViewScreenshots :artworks="game.artworks" :name="game.name" />
             </div>
         </article>
@@ -60,54 +62,41 @@ onMounted(() => {
             <Card>
                 <template #title>Game Details</template>
                 <template #content>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <p className="text-sm text-gray-500">Genre</p>
-                            <p>Action, Adventure</p>
+                            <p class="text-sm text-gray-500">Genre</p>
+                            <p v-if="game.genres && game.genres.length > 0">{{ game?.genres[0].name }}</p>
+                            <p v-else>No information</p>
                         </div>
                         <div>
-                            <p className="text-sm text-gray-500">Release Date</p>
-                            <p>May 21, 2024</p>
+                            <p class="text-sm text-gray-500">Release Date</p>
+                            <p>{{ game.first_release_date ? stringDateFormatter(game.first_release_date) :
+                                "No release date" }}</p>
                         </div>
                         <div>
-                            <p className="text-sm text-gray-500">Developer</p>
-                            <p>Galactic Studios</p>
+                            <p class="text-sm text-gray-500">Developer</p>
+                            <p v-if="game.companies && game.companies.length > 0">{{ game?.companies[0].name }}</p>
+                            <p v-else>No information</p>
                         </div>
                         <div>
-                            <p className="text-sm text-gray-500">Publisher</p>
-                            <p>Cosmic Games</p>
+                            <p class="text-sm text-gray-500">Rating</p>
+                            <Rating v-model="game.rating" readonly :cancel="false" />
                         </div>
                     </div>
                 </template>
             </Card>
             <Card>
-                <template #title>System Requirements</template>
+                <template #title>Similar Games</template>
                 <template #content>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <p className="text-sm text-gray-500">OS</p>
-                            <p>Windows 10 or later</p>
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-500">Processor</p>
-                            <p>Intel Core i5 or AMD Ryzen 5</p>
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-500">Memory</p>
-                            <p>8GB RAM</p>
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-500">Graphics</p>
-                            <p>NVIDIA GTX 1060 or AMD RX 580</p>
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-500">Storage</p>
-                            <p>50GB available space</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div v-for="game in similarGames" :key="game.id">
+                            <img :src="getFullCoverUrl(game?.cover?.url)" alt="game" class="rounded-lg" />
+                            <p class="text-sm text-gray-500">{{ game.name }}</p>
                         </div>
                     </div>
                 </template>
             </Card>
-            <div className="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 gap-4">
                 <Button label="Buy Now" class="grid-cols-1 w-full p-1" text outlined />
                 <Button label="Download Demo" class=" w-full p-1" text raised />
             </div>

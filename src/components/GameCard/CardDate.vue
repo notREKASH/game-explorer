@@ -1,5 +1,5 @@
 <script setup>
-import { numDateFormater } from '@/utils/dateFormater';
+import { numDateFormatter } from '@/utils/dateFormatter';
 
 
 const props = defineProps({
@@ -9,7 +9,7 @@ const props = defineProps({
 
 <template>
     <p v-if="props.date" class="m-0">
-        {{ numDateFormater(props.date) }}
+        {{ numDateFormatter(props.date) }}
     </p>
     <p v-else>
         Date unknown

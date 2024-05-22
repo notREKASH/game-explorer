@@ -2,13 +2,15 @@
 import getFullCoverUrl from '@/utils/getFullCoverUrl'
 
 const props = defineProps({
-    artworks: Array,
-    name: String
+    game: Object
 })
+
 </script>
 
 <template>
-    <img v-if="props?.artworks[0].url" :src="getFullCoverUrl(props.artworks[0].url, 'screenshot_huge')"
-        :alt="props.name" class="rounded-lg overflow-hidden" />
-    <img v-else src="https://via.placeholder.com/264x352" alt="placeholder" class="rounded-lg overflow-hidden" />
+    <img v-if="props.game.artworks && props.game.artworks.length > 0 && props.game.artworks[0].url"
+        :src="getFullCoverUrl(props.game.artworks[0].url, 'screenshot_huge')" :alt="props.game.name"
+        class="rounded-lg overflow-hidden" />
+    <img v-else-if="props.game.cover" :src="getFullCoverUrl(props.game.cover.url, 'screenshot_huge')" :alt="props.name"
+        class="rounded-lg overflow-hidden" />
 </template>

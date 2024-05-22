@@ -1,4 +1,3 @@
-// composables/useFavoriteList.js
 import { useGamesStore } from "@/stores/games";
 import { useToast } from "primevue/usetoast";
 import { computed } from "vue";

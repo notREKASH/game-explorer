@@ -5,8 +5,6 @@ import { useRoute } from 'vue-router';
 import Loader from '@/components/SearchLoader.vue';
 import Button from 'primevue/button';
 import Card from 'primevue/card';
-import Rating from 'primevue/rating';
-import { stringDateFormatter } from '@/utils/dateFormatter';
 
 // Components
 import ViewTitle from '@/components/GameView/ViewTitle.vue';
@@ -16,6 +14,7 @@ import ViewButton from '@/components/GameView/ViewButton.vue';
 import ViewDesc from '@/components/GameView/ViewDesc.vue';
 import ViewScreenshots from '@/components/GameView/ViewScreenshots.vue';
 import SimilarGames from '@/components/GameView/SimilarGames/SimilarGames.vue';
+import GameDetails from '@/components/GameView/GameDetails.vue';
 
 
 const gamesStore = useGamesStore();
@@ -67,27 +66,7 @@ watch(() => route.params.id, async (newId) => {
             <Card>
                 <template #title>Game Details</template>
                 <template #content>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <p class="text-sm text-gray-500">Genre</p>
-                            <p v-if="game.genres && game.genres.length > 0">{{ game?.genres[0].name }}</p>
-                            <p v-else>No information</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">Release Date</p>
-                            <p>{{ game.first_release_date ? stringDateFormatter(game.first_release_date) :
-                                "No release date" }}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">Developer</p>
-                            <p v-if="game.companies && game.companies.length > 0">{{ game?.companies[0].name }}</p>
-                            <p v-else>No information</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">Rating</p>
-                            <Rating v-model="game.rating" readonly :cancel="false" />
-                        </div>
-                    </div>
+                    <GameDetails :game="game" />
                 </template>
             </Card>
             <SimilarGames />

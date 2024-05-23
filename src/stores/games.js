@@ -7,6 +7,9 @@ export const useGamesStore = defineStore("games", {
     similarGames: [],
     favorites: [],
     gameDetails: {},
+    page: 1,
+    limit: 12,
+    totalGames: 0,
     searchQuery: "",
     loading: false,
   }),
@@ -16,13 +19,18 @@ export const useGamesStore = defineStore("games", {
   actions: {
     async searchGames(query) {
       this.loading = true;
+      this.searchQuery = query;
+      const offset = (this.page - 1) * this.limit;
       try {
         const response = await fetch(`/api/games`, {
           method: "POST",
           headers: {
             "Content-Type": "text/plain",
           },
-          body: `search "${query}"; fields name,cover.url,first_release_date,summary;`,
+          body: `search "${query}"; fields name,cover.url,first_release_date,summary;
+          limit ${this.limit}; 
+          offset ${offset};
+          `,
         });
         const games = await response.json();
         this.loading = false;
@@ -34,15 +42,21 @@ export const useGamesStore = defineStore("games", {
     },
     async fetchTopGames() {
       this.loading = true;
+      const offset = (this.page - 1) * this.limit;
       try {
         const response = await fetch(`/api/games`, {
           method: "POST",
           headers: {
             "Content-Type": "text/plain",
           },
-          body: `fields name,cover.url,first_release_date,summary; sort total_rating_count desc;`,
+          body: `fields name,cover.url,first_release_date,summary; sort total_rating_count desc;
+          limit ${this.limit}; 
+          offset ${offset};
+          `,
         });
         const games = await response.json();
+        console.log("games", games);
+        this.totalGames = games.length;
         this.games = games;
         this.loading = false;
       } catch (error) {

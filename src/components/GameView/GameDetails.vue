@@ -2,10 +2,10 @@
 import { ref, onMounted } from 'vue';
 
 // Components
-import GenreDetails from './GameDetails/GenreDetails.vue';
-import ReleaseDateDetails from './GameDetails/ReleaseDateDetails.vue';
-import DeveloperDetails from './GameDetails/DeveloperDetails.vue';
-import RatingDetails from './GameDetails/RatingDetails.vue';
+import GenreDetails from "./GameDetails/GenreDetails.vue";
+import ReleaseDateDetails from "./GameDetails/ReleaseDateDetails.vue";
+import DeveloperDetails from "./GameDetails/DeveloperDetails.vue";
+import RatingDetails from "./GameDetails/RatingDetails.vue"
 
 const props = defineProps({
     game: Object

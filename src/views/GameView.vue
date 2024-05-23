@@ -1,11 +1,12 @@
 <script setup>
-import { computed, onMounted, ref, watchEffect } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useGamesStore } from '@/stores/games';
 import { useRoute } from 'vue-router';
 import Loader from '@/components/SearchLoader.vue';
 import Button from 'primevue/button';
 import Card from 'primevue/card';
 import Rating from 'primevue/rating';
+import { stringDateFormatter } from '@/utils/dateFormatter';
 
 // Components
 import ViewTitle from '@/components/GameView/ViewTitle.vue';
@@ -14,15 +15,12 @@ import ViewCoverImg from '@/components/GameView/ViewCoverImg.vue';
 import ViewButton from '@/components/GameView/ViewButton.vue';
 import ViewDesc from '@/components/GameView/ViewDesc.vue';
 import ViewScreenshots from '@/components/GameView/ViewScreenshots.vue';
-import { stringDateFormatter } from '@/utils/dateFormatter';
-import getFullCoverUrl from '@/utils/getFullCoverUrl';
+import SimilarGames from '@/components/GameView/SimilarGames/SimilarGames.vue';
 
 
 const gamesStore = useGamesStore();
 const route = useRoute();
 const id = route.params.id;
-
-const similarGames = computed(() => gamesStore.similarGames);
 const game = ref({});
 const loading = ref(true);
 
@@ -34,6 +32,13 @@ onMounted(() => {
         loading.value = false;
     }
     fetchGame();
+});
+
+watch(() => route.params.id, async (newId) => {
+    loading.value = true;
+    await gamesStore.fetchGameDetails(newId);
+    game.value = gamesStore.gameDetails;
+    loading.value = false;
 });
 
 </script>
@@ -85,17 +90,7 @@ onMounted(() => {
                     </div>
                 </template>
             </Card>
-            <Card>
-                <template #title>Similar Games</template>
-                <template #content>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div v-for="game in similarGames" :key="game.id">
-                            <img :src="getFullCoverUrl(game?.cover?.url)" alt="game" class="rounded-lg" />
-                            <p class="text-sm text-gray-500">{{ game.name }}</p>
-                        </div>
-                    </div>
-                </template>
-            </Card>
+            <SimilarGames />
             <div class="grid grid-cols-2 gap-4">
                 <Button label="Buy Now" class="grid-cols-1 w-full p-1" text outlined />
                 <Button label="Download Demo" class=" w-full p-1" text raised />

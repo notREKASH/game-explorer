@@ -8,7 +8,9 @@ Currently, you can only run this project locally. IGDB has a complex CORS setup,
 
 To get started, refer to the [IGDB Documentation](https://api-docs.igdb.com/).
 
-Follow the documentation to obtain your `CLIENT_ID` and `CLIENT_SECRET` to get a `TWITCH_ACCESS_TOKEN`. I used Postman to obtain my access token.## Installation
+Follow the documentation to obtain your `CLIENT_ID` and `CLIENT_SECRET` to get a `TWITCH_ACCESS_TOKEN`. I used Postman to obtain my access token.
+
+## Installation
 
 Clone this repository:
 

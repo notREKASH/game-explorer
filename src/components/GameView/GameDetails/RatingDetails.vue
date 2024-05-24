@@ -9,7 +9,7 @@ const props = defineProps({
 const rating = ref(0);
 
 onMounted(() => {
-    rating.value = props.rating;
+    rating.value = props.game.rating;
 });
 </script>
 

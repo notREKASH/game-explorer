@@ -10,9 +10,11 @@ const goHome = () => {
 </script>
 
 <template>
-    <header class="bg-gray-800 text-white p-4 flex align-middle justify-between">
-        <SearchGame />
-        <RouterLink to="/" @click="goHome" class="text-center text-2xl">Games Explorer
+    <header
+        class="flex-col gap-2 items-center p-4 bg-gray-800 text-white flex align-middle md:justify-between md:flex-row">
+        <RouterLink to=" /" @click="goHome" class="text-2xl font-bold md:order-1">
+            GameList
         </RouterLink>
+        <SearchGame />
     </header>
 </template>

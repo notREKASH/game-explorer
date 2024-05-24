@@ -47,7 +47,7 @@ watch(() => route.params.id, async (newId) => {
     <div v-if="loading">
         <Loader />
     </div>
-    <main v-else class="grid grid-cols-[1fr_300px] gap-8 max-w-6xl mx-auto py-12 px-4 md:px-6">
+    <main v-else class="grid gap-8 max-w-6xl mx-auto py-12 px-4 md:px-6 md:grid-cols-[1fr_300px]">
         <article>
             <ViewTitle :title="game.name" />
             <ViewSummary :summary="game.summary" />

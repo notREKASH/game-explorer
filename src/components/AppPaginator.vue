@@ -27,5 +27,5 @@ const pageChange = (event) => {
 </script>
 
 <template>
-    <Paginator :rows="rows" :totalRecords="totalRecords" :first="first" @page="pageChange"></Paginator>
+    <Paginator :rows="rows" :totalRecords="totalRecords" :first="first" @page="pageChange" class="w-full"></Paginator>
 </template>

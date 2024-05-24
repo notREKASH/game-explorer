@@ -32,7 +32,7 @@ const searchGames = () => {
         <IconField iconPosition="left" class="flex">
             <InputIcon class="pi pi-search"></InputIcon>
             <InputText type="text" id="username" v-model="searchTerm" @keyup.enter="searchGames"
-                class="text-black pl-10" />
+                class="text-black pl-10 md:py-1" />
         </IconField>
     </div>
 </template>

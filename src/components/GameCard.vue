@@ -16,7 +16,7 @@ const { isFavorite, addToMyList, removeFromMyList } = useFavoriteList(props.game
 </script>
 
 <template>
-    <Card style="width: 16.5rem; overflow: hidden">
+    <Card class="w-64 overflow-hidden">
         <template #header>
             <Image :cover="props.game.cover" :name="props.game.name" />
         </template>

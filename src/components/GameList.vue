@@ -13,7 +13,7 @@ const loading = computed(() => gamesStore.loading)
 
 <template>
     <div>
-        <div v-if="loading">
+        <div v-if="loading" class="flex justify-center items-center h-96 w-full">
             <Loader />
         </div>
         <div v-else>

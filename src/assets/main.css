@@ -12,3 +12,22 @@
   color: white;
   padding: 0.5rem;
 }
+
+.p-paginator {
+  padding: 0;
+}
+
+.p-toast {
+  width: 90%;
+  max-width: 400px;
+}
+
+.p-progress-spinner {
+  width: 75px;
+  height: 75px;
+
+  @media (min-width: 576px) {
+    width: 100px;
+    height: 100px;
+  }
+}

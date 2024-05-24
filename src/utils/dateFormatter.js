@@ -1,9 +1,9 @@
-// Formateur de date en format numérique standard
+// Date formatter functions in numeric format
 const numDateFormatter = (date) => {
   return date ? new Date(date * 1000).toLocaleDateString() : "";
 };
 
-// Formateur de date en format long
+// Date formatter functions in string format
 const stringDateFormatter = (date) => {
   if (!date) return "";
   date = new Date(date * 1000);
